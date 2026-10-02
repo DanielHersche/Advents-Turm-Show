@@ -1,7 +1,7 @@
 {
     "name": "Turm-Show Adventskerzen",
     "author": "XTRA",
-    "desc": "Adventskerzen am Turm: Kalender K1-K4, je Zeitfenster Intro, nahtloser Loop und Outro, Beamer-Standby per HDMI-CEC oder PJLink, Vier-Ecken-Korrektur.",
+    "desc": "Adventskerzen am Turm: Kalender K1-K4, Intro/Loop/Outro, Beamer per CEC oder PJLink, Vier-Ecken-Korrektur.",
     "platforms": [
         "pi-4",
         "pi-5"
