@@ -477,5 +477,8 @@
             "type": "boolean",
             "default": false
         }
-    ]
+    ],
+    "permissions": {
+        "network": "PJLink: Beamer im lokalen Netz ein- und ausschalten (TCP-Port 4352)"
+    }
 }

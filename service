@@ -122,12 +122,13 @@ def plan(config, now):
     except Exception:
         test_set = 1
 
+    # "Beamer immer im Standby" hat Vorrang vor allem anderen, auch vor dem Einmessen
+    if betrieb == "aus":
+        return 0, False, "Beamer immer im Standby"
     if anzeige != "play":
         return test_set, True, "Einmessen (%s), Satz K%d" % (anzeige, test_set)
     if betrieb == "an":
         return test_set, True, "Dauerbetrieb, Satz K%d" % test_set
-    if betrieb == "aus":
-        return 0, False, "Beamer immer aus"
 
     vor = int(config.get("vorlauf", 60) or 0)
     nach = int(config.get("nachlauf", 120) or 0)
@@ -203,18 +204,39 @@ def pjlink(ip, password, cmd):
         s.close()
 
 
-def pjlink_ensure(config, want_on):
+POWR_TEXT = {"0": "Standby", "1": "EIN", "2": "kuehlt ab", "3": "waermt auf",
+             "ERR1": "unbekannter Befehl", "ERR2": "ungueltiger Parameter",
+             "ERR3": "gerade nicht moeglich", "ERR4": "Beamer-Fehler", "OK": "OK"}
+
+last_pj_status = [None]
+warned_no_ip = [False]
+
+
+def pjlink_value(answer):
+    return answer.split("=", 1)[-1] if "=" in answer else answer
+
+
+def pjlink_ensure(config, want_on, force_log=False):
+    """Wie im Kerzen Loop Player: Zustand abfragen, bei Bedarf %1POWR 1 / %1POWR 0 senden."""
     ip = str(config.get("pjlink_ip", "") or "").strip()
     if not ip:
+        if not warned_no_ip[0]:
+            log("PJLink: keine IP-Adresse eingetragen - nur CEC aktiv, echter Standby nicht moeglich")
+            warned_no_ip[0] = True
         return
+    warned_no_ip[0] = False
     pw = str(config.get("pjlink_pw", "") or "")
     try:
-        status = pjlink(ip, pw, "%1POWR ?").split("=")[-1]
-        # 0 Standby, 1 an, 2 kuehlt ab, 3 waermt auf
+        status = pjlink_value(pjlink(ip, pw, "%1POWR ?"))
+        if status != last_pj_status[0] or force_log:
+            log("PJLink %s: Zustand %s (%s)" % (ip, status, POWR_TEXT.get(status, "?")))
+            last_pj_status[0] = status
         if want_on and status == "0":
-            log("PJLink: Beamer einschalten -> %s" % pjlink(ip, pw, "%1POWR 1"))
+            r = pjlink_value(pjlink(ip, pw, "%1POWR 1"))
+            log("PJLink: Einschalten gesendet -> %s (%s)" % (r, POWR_TEXT.get(r, "?")))
         elif not want_on and status in ("1", "3"):
-            log("PJLink: Beamer in Standby -> %s" % pjlink(ip, pw, "%1POWR 0"))
+            r = pjlink_value(pjlink(ip, pw, "%1POWR 0"))
+            log("PJLink: Standby gesendet -> %s (%s)" % (r, POWR_TEXT.get(r, "?")))
     except Exception as err:
         log("PJLink %s nicht erreichbar: %s" % (ip, err))
 
@@ -229,6 +251,7 @@ def main():
         time.sleep(5)
 
     last = (None, None)
+    last_cfg = None
     last_cec = 0
     last_pjlink = 0
     while True:
@@ -237,21 +260,33 @@ def main():
         prog, beamer_on, text = plan(config, now)
         node_send("prog", prog)
 
+        use_cec = config.get("cec", True)
+        cfg_key = (use_cec, config.get("pjlink_ip"), config.get("pjlink_pw"),
+                   config.get("betrieb"), config.get("anzeige"))
+        cfg_changed = cfg_key != last_cfg
+
         changed = (prog, beamer_on) != last
-        if changed:
-            log("%s -> %s | Beamer %s" % (now.strftime("%Y-%m-%d %H:%M:%S"), text,
-                                          "an" if beamer_on else "Standby"))
+        if changed or cfg_changed:
+            log("%s -> %s | Beamer soll %s sein | CEC %s, PJLink %s" % (
+                now.strftime("%Y-%m-%d %H:%M:%S"), text,
+                "EIN" if beamer_on else "STANDBY",
+                "ja" if use_cec else "nein",
+                str(config.get("pjlink_ip") or "").strip() or "keine IP"))
 
         beamer_changed = beamer_on != last[1]
-        use_cec = config.get("cec", True)
-        if use_cec and (beamer_changed or time.time() - last_cec > 600):
+        if use_cec and (beamer_changed or cfg_changed or time.time() - last_cec > 600):
             syncer("tv on" if beamer_on else "tv off")
+            log("CEC: '%s' gesendet" % ("tv on" if beamer_on else "tv off"))
             last_cec = time.time()
-        if beamer_changed or time.time() - last_pjlink > 30:
-            pjlink_ensure(config, beamer_on)
+        elif not use_cec and cfg_changed and last_cfg is not None and last_cfg[0]:
+            # CEC wurde abgewaehlt: HDMI-Signal wieder einschalten, damit nur PJLink wirkt
+            syncer("tv on")
+        if beamer_changed or cfg_changed or time.time() - last_pjlink > 30:
+            pjlink_ensure(config, beamer_on, force_log=beamer_changed)
             last_pjlink = time.time()
 
         last = (prog, beamer_on)
+        last_cfg = cfg_key
         time.sleep(2)
 
 
