@@ -22,13 +22,15 @@ local shader = resource.create_shader[[
     uniform float soft;
     uniform float gain;
     void main() {
-        vec3 p = vec3(TexCoord, 1.0);
+        // TexCoord hat den Ursprung unten links (y nach oben).
+        // Die Eckwerte sind wie im Messraster gemeint: Ursprung oben links, y nach unten.
+        vec3 p = vec3(TexCoord.x, 1.0 - TexCoord.y, 1.0);
         float w = dot(r2, p);
         vec2 s = vec2(dot(r0, p), dot(r1, p)) / w;
         float m = smoothstep(0.0, soft, s.x) * smoothstep(0.0, soft, s.y)
                 * smoothstep(0.0, soft, 1.0 - s.x) * smoothstep(0.0, soft, 1.0 - s.y);
         if (w <= 0.0) m = 0.0;
-        vec4 c = texture2D(Texture, clamp(s, 0.0, 1.0));
+        vec4 c = texture2D(Texture, clamp(vec2(s.x, 1.0 - s.y), 0.0, 1.0));
         gl_FragColor = vec4(c.rgb * gain * m, 1.0) * Color;
     }
 ]]
