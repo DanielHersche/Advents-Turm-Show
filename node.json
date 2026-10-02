@@ -1,0 +1,481 @@
+{
+    "name": "Turm-Show Adventskerzen",
+    "options": [
+        {
+            "title": "Betrieb",
+            "type": "section"
+        },
+        {
+            "title": "Betriebsart",
+            "name": "betrieb",
+            "type": "select",
+            "default": "auto",
+            "options": [
+                [
+                    "auto",
+                    "Automatik nach Kalender"
+                ],
+                [
+                    "an",
+                    "Dauerbetrieb (Test, Satz unten)"
+                ],
+                [
+                    "aus",
+                    "Beamer immer im Standby"
+                ]
+            ]
+        },
+        {
+            "title": "Satz fuer Test und Einmessen",
+            "name": "test_set",
+            "type": "select",
+            "default": 1,
+            "options": [
+                [
+                    1,
+                    "K1 - eine Kerze"
+                ],
+                [
+                    2,
+                    "K2 - zwei Kerzen"
+                ],
+                [
+                    3,
+                    "K3 - drei Kerzen"
+                ],
+                [
+                    4,
+                    "K4 - vier Kerzen"
+                ]
+            ]
+        },
+        {
+            "title": "Anzeige",
+            "name": "anzeige",
+            "type": "select",
+            "default": "play",
+            "options": [
+                [
+                    "play",
+                    "Betrieb"
+                ],
+                [
+                    "measure",
+                    "1 Messraster (ohne Korrektur)"
+                ],
+                [
+                    "check",
+                    "2 Pruefraster (mit Korrektur)"
+                ],
+                [
+                    "both",
+                    "3 Video + Pruefraster"
+                ]
+            ]
+        },
+        {
+            "title": "Kalender (Datum JJJJ-MM-TT, Zeit HH:MM oder HH:MM:SS)",
+            "type": "section"
+        },
+        {
+            "title": "K1 ab Datum",
+            "name": "k1_start",
+            "type": "string",
+            "default": "2026-12-01"
+        },
+        {
+            "title": "K2 ab Datum",
+            "name": "k2_start",
+            "type": "string",
+            "default": "2026-12-06"
+        },
+        {
+            "title": "K3 ab Datum",
+            "name": "k3_start",
+            "type": "string",
+            "default": "2026-12-13"
+        },
+        {
+            "title": "K4 ab Datum",
+            "name": "k4_start",
+            "type": "string",
+            "default": "2026-12-20"
+        },
+        {
+            "title": "Letzter Showtag",
+            "name": "end_date",
+            "type": "string",
+            "default": "2026-12-24"
+        },
+        {
+            "title": "Morgen: Start",
+            "name": "m_start",
+            "type": "string",
+            "default": "06:00"
+        },
+        {
+            "title": "Morgen: Ende (Outro beginnt)",
+            "name": "m_end",
+            "type": "string",
+            "default": "08:00"
+        },
+        {
+            "title": "Abend: Start",
+            "name": "a_start",
+            "type": "string",
+            "default": "16:45"
+        },
+        {
+            "title": "Abend: Ende (Outro beginnt)",
+            "name": "a_end",
+            "type": "string",
+            "default": "22:00"
+        },
+        {
+            "title": "Filme K1 (eine Kerze)",
+            "type": "section"
+        },
+        {
+            "title": "K1 Intro (einmal beim Einschalten)",
+            "name": "k1_intro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K1 Loop (laeuft nahtlos bis Fensterende)",
+            "name": "k1_loop",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K1 Outro (einmal beim Ausschalten)",
+            "name": "k1_outro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "Filme K2 (zwei Kerzen)",
+            "type": "section"
+        },
+        {
+            "title": "K2 Intro (einmal beim Einschalten)",
+            "name": "k2_intro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K2 Loop (laeuft nahtlos bis Fensterende)",
+            "name": "k2_loop",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K2 Outro (einmal beim Ausschalten)",
+            "name": "k2_outro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "Filme K3 (drei Kerzen)",
+            "type": "section"
+        },
+        {
+            "title": "K3 Intro (einmal beim Einschalten)",
+            "name": "k3_intro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K3 Loop (laeuft nahtlos bis Fensterende)",
+            "name": "k3_loop",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K3 Outro (einmal beim Ausschalten)",
+            "name": "k3_outro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "Filme K4 (vier Kerzen)",
+            "type": "section"
+        },
+        {
+            "title": "K4 Intro (einmal beim Einschalten)",
+            "name": "k4_intro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K4 Loop (laeuft nahtlos bis Fensterende)",
+            "name": "k4_loop",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "K4 Outro (einmal beim Ausschalten)",
+            "name": "k4_outro",
+            "type": "resource",
+            "valid": [
+                "video",
+                "image"
+            ],
+            "default": "empty.png",
+            "features": [
+                "h264",
+                "hevc",
+                "image2k"
+            ]
+        },
+        {
+            "title": "Uebergaenge",
+            "type": "section"
+        },
+        {
+            "title": "Ueberblendung (Sekunden)",
+            "name": "fade",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Laenge Loop-Film in Sekunden (0 = Outro sofort mit Ueberblendung, sonst am Loop-Ende hart schneiden)",
+            "name": "loop_length",
+            "type": "float",
+            "default": 0
+        },
+        {
+            "title": "Beamer ein/aus",
+            "type": "section"
+        },
+        {
+            "title": "Vorlauf: Beamer so viele Sekunden vor Showbeginn einschalten",
+            "name": "vorlauf",
+            "type": "integer",
+            "default": 60
+        },
+        {
+            "title": "Nachlauf: Beamer so viele Sekunden nach Fensterende in Standby (laenger als Outro!)",
+            "name": "nachlauf",
+            "type": "integer",
+            "default": 120
+        },
+        {
+            "title": "HDMI-CEC verwenden (tv on / tv off)",
+            "name": "cec",
+            "type": "boolean",
+            "default": true
+        },
+        {
+            "title": "PJLink: IP-Adresse des Beamers (leer = kein PJLink)",
+            "name": "pjlink_ip",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "title": "PJLink: Passwort",
+            "name": "pjlink_pw",
+            "type": "string",
+            "default": ""
+        },
+        {
+            "title": "Geometrie",
+            "type": "section"
+        },
+        {
+            "title": "Bildschirm-Drehung (nur ohne Vier-Ecken-Korrektur)",
+            "name": "rotation",
+            "type": "select",
+            "default": 0,
+            "options": [
+                [
+                    0,
+                    "0 Grad (keine)"
+                ],
+                [
+                    90,
+                    "90 Grad"
+                ],
+                [
+                    180,
+                    "180 Grad"
+                ],
+                [
+                    270,
+                    "270 Grad"
+                ]
+            ]
+        },
+        {
+            "title": "Vier-Ecken-Korrektur aktiv",
+            "name": "corner",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "title": "Oben links x",
+            "name": "ol_x",
+            "type": "float",
+            "default": 0.0
+        },
+        {
+            "title": "Oben links y",
+            "name": "ol_y",
+            "type": "float",
+            "default": 0.0
+        },
+        {
+            "title": "Oben rechts x",
+            "name": "or_x",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Oben rechts y",
+            "name": "or_y",
+            "type": "float",
+            "default": 0.0
+        },
+        {
+            "title": "Unten rechts x",
+            "name": "ur_x",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Unten rechts y",
+            "name": "ur_y",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Unten links x",
+            "name": "ul_x",
+            "type": "float",
+            "default": 0.0
+        },
+        {
+            "title": "Unten links y",
+            "name": "ul_y",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Kantenweichheit",
+            "name": "soft",
+            "type": "float",
+            "default": 0.002
+        },
+        {
+            "title": "Helligkeit (1.0 = unveraendert)",
+            "name": "gain",
+            "type": "float",
+            "default": 1.0
+        },
+        {
+            "title": "Ausweichweg ueber Snapshot",
+            "name": "snapshot",
+            "type": "boolean",
+            "default": false
+        }
+    ]
+}
