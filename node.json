@@ -338,7 +338,7 @@
             "default": 1.0
         },
         {
-            "title": "Laenge Loop-Film in Sekunden (0 = Outro sofort mit Ueberblendung, sonst am Loop-Ende hart schneiden)",
+            "title": "Laenge Loop-Film in Sek. (0 = Outro sofort, sonst am Loop-Ende schneiden)",
             "name": "loop_length",
             "type": "float",
             "default": 0
